@@ -3,13 +3,20 @@ from typing import List
 
 class Solution:
     def permute(self, nums: List[int]) -> List[List[int]]:
-        cache = {}
-        for i , n in enumerate(nums):
-            if n not in cache:
-                cache[n] = [n]
-            else:
-                cache[n].append(n)
-        return cache
+
+        def perm(lst):
+            if len(lst) == 0:
+                return []
+            elif len(lst) == 1:
+                return [lst]
+            all = []
+            for i, n in enumerate(lst):
+                x = lst[i]
+                rest = lst[:i] + lst[i+1:]
+                for p in perm(rest):
+                    all.append([x] + p)
+            return all
+        return perm(nums)
 
 s = Solution()
 
