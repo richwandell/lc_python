@@ -4,10 +4,10 @@ from typing import List
 class Solution:
     def twoSum(self, nums: List[int], target: int) -> List[int]:
         saved = {}
-        for i in range(len(nums)):
-            complement = target - nums[i]
-            if nums[i] in saved:
-                return [saved[nums[i]], i]
+        for i, n in enumerate(nums):
+            complement = target - n
+            if n in saved:
+                return [saved[n], i]
             else:
                 saved[complement] = i
 
