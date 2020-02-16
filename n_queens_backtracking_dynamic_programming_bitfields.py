@@ -39,7 +39,7 @@ class Solution:
             exhausted_paths[current] = False
             return False
 
-        row, boards, exhausted_paths = [False] * n * n, [], {}
+        boards, exhausted_paths = [], {}
         while True:
             board = 0
             bcols, bldiag, brdiag, current = 0, 0, 0, 0
