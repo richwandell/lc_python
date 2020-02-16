@@ -26,27 +26,28 @@ class Solution:
             nonlocal board, bcols, bldiag, brdiag, current
 
             for c in range(n):
+                # check if setting a queen in (r,c) would put the queen in danger
                 if bcols & (1 << c) | bldiag & (1 << (r - c + n)) | brdiag & (1 << (r + c)) < 1:
                     last_path = current
 
                     if current == 0:
                         current = 1
-
+                    # remember paths we have already visited
                     current = (current << n) | c
 
                     if current in exhausted_paths:
                         current = last_path
                         continue
-
+                    # place the queen
                     board = board | (1 << (r*n+c))
-
+                    # save columns and diagonals with queens
                     lldiag, lrdiag = r-c + n, r+c
                     bcols, bldiag, brdiag = bcols | (1 << c), bldiag | (1 << lldiag), brdiag | (1 << lrdiag)
 
                     if r+1 == n or solve(r+1):
                         exhausted_paths[current] = False
                         return True
-
+                    # remove the queen
                     board = board & ~(1 << (r * n + c))
                     current = last_path
 
@@ -60,6 +61,7 @@ class Solution:
             board = 0
             bcols, bldiag, brdiag, current = 0, 0, 0, 0
             solve(0)
+            # board is a bitfield, if it's value is greater than 1 we have a valid board.
             if board > 0:
                 new_board = []
                 for r in range(n):
