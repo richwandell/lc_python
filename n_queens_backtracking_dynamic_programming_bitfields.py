@@ -9,14 +9,9 @@ class Solution:
         bcols, bldiag, brdiag = 0, 0, 0
 
         def can_place_queen(r, c):
-            mask = 1 << c
-            cc = bcols & mask
-
-            mask = 1 << (r-c + n)
-            ldc = bldiag & mask
-
-            mask = 1 << (r+c)
-            rdc = brdiag & mask
+            cc = bcols & (1 << c)
+            ldc = bldiag & (1 << (r-c + n))
+            rdc = brdiag & (1 << (r+c))
 
             check = cc | ldc | rdc
             if check > 0:
@@ -55,19 +50,15 @@ class Solution:
                         return True
                     board[r][c] = "."
                     current.pop()
-                    mask = ~(1 << c)
-                    bcols = bcols & mask
 
-                    mask = ~(1 << lldiag)
-                    bldiag = bldiag & mask
-
-                    mask = ~(1 << lrdiag)
-                    brdiag = brdiag & mask
+                    bcols = bcols & ~(1 << c)
+                    bldiag = bldiag & ~(1 << lldiag)
+                    brdiag = brdiag & ~(1 << lrdiag)
 
             test_cache[cache_key] = False
             return False
 
-        row = ["." for _ in range(n)]
+        row = "." * n
         while True:
             current = []
             board = [list(row) for _ in range(n)]
