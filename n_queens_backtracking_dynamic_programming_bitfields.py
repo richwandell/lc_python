@@ -7,7 +7,7 @@ class Solution:
     def solveNQueens(self, n: int) -> List[List[str]]:
 
         def solve(r):
-            nonlocal bcols, bldiag, brdiag, current
+            nonlocal board, bcols, bldiag, brdiag, current
 
             for c in range(n):
                 if bcols & (1 << c) | bldiag & (1 << (r - c + n)) | brdiag & (1 << (r + c)) < 1:
@@ -22,7 +22,7 @@ class Solution:
                         current = last_path
                         continue
 
-                    board[r * n + c] = True
+                    board = board | (1 << (r*n+c))
 
                     lldiag, lrdiag = r-c + n, r+c
                     bcols, bldiag, brdiag = bcols | (1 << c), bldiag | (1 << lldiag), brdiag | (1 << lrdiag)
@@ -31,7 +31,7 @@ class Solution:
                         exhausted_paths[current] = False
                         return True
 
-                    board[r * n + c] = False
+                    board = board & ~(1 << (r * n + c))
                     current = last_path
 
                     bcols, bldiag, brdiag = bcols & ~(1 << c), bldiag & ~(1 << lldiag), brdiag & ~(1 << lrdiag)
@@ -41,13 +41,16 @@ class Solution:
 
         row, boards, exhausted_paths = [False] * n * n, [], {}
         while True:
-            board = list(row)
+            board = 0
             bcols, bldiag, brdiag, current = 0, 0, 0, 0
             solve(0)
-            if True in board[:n]:
+            if board > 0:
                 new_board = []
-                for i in range(0, len(board), n):
-                    new_board.append("".join(["Q" if x == True else "." for x in board[i:i+n]]))
+                for r in range(n):
+                    for c in range(n):
+                        if board & (1 << r*n+c) > 0:
+                            new_board.append(("." * c) + "Q" + ("." * (n - c - 1)))
+                            break
                 boards.append(new_board)
             else:
                 break
