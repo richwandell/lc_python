@@ -10,25 +10,19 @@ class Solution:
 
         def can_place_queen(r, c):
             mask = 1 << c
-            t = bcols & mask
-            if t > 0:
-                return False
-            mask = 1 << (abs(r-c))
-            t = bldiag & mask
-            if t > 0:
-                return False
+            cc = bcols & mask
+
+            mask = 1 << (r-c + n)
+            ldc = bldiag & mask
 
             mask = 1 << (r+c)
-            t = brdiag & mask
-            if t > 0:
+            rdc = brdiag & mask
+
+            check = cc | ldc | rdc
+            if check > 0:
                 return False
+
             return True
-            # lldiag = str(r-c)
-            # lrdiag = str(r+c)
-            # if c in cols or \
-            #         lldiag in ldiag or lrdiag in rdiag:
-            #     return False
-            # return True
 
         def solve(r):
             nonlocal bcols, bldiag, brdiag
@@ -50,7 +44,7 @@ class Solution:
                     current.append((r, c))
                     board[r][c] = "Q"
 
-                    lldiag = abs(r-c)
+                    lldiag = r-c + n
                     lrdiag = r+c
 
                     bcols = bcols | (1 << c)
@@ -60,7 +54,7 @@ class Solution:
                     if solve(r+1):
                         return True
                     board[r][c] = "."
-                    last = current.pop()
+                    current.pop()
                     mask = ~(1 << c)
                     bcols = bcols & mask
 
@@ -88,7 +82,7 @@ class Solution:
 
 
 s = Solution()
-boards = s.solveNQueens(4)
+boards = s.solveNQueens(9)
 
 print(len(boards))
 pprint.pprint(boards, width=10)
