@@ -3,10 +3,26 @@ import pprint
 
 
 class Solution:
+    """
+    board is a bitfield holding bits that indicate whether or not a queen is placed at a position
+    - queens are placed by shifting 1 into place and using logical or board = board | (1 << (r*n+c))
+    - queens are removed using a bit mask, shifting 1 into place, flipping all bits, and using & operator board = board & ~(1 << (r * n + c))
+
+    bcols, bldiag, and brdiag are bitfields that represent whether a queen has been place in a column,
+    the left diagonal, or the right diagonal. We can check these bitfields by shifting 1 and masking each value.
+    Then we can use logical or with all three fields and check if the value is greater than 1. When a queen is
+    added to a position we place the queen by shifting 1 and setting the field using logical or. When a queen is
+    removed we mask the bit off of the bitfield.
+
+    current: As paths are exhausted we save exhausted paths into a path cache using a python dictionary. The current path
+    is a bitfield that is shifted "n" times for each row. The queen position in each row is added using logical or.
+    current = (current << n) | c
+    """
 
     def solveNQueens(self, n: int) -> List[List[str]]:
 
         def solve(r):
+
             nonlocal board, bcols, bldiag, brdiag, current
 
             for c in range(n):
@@ -16,7 +32,7 @@ class Solution:
                     if current == 0:
                         current = 1
 
-                    current = (current << 4) | c
+                    current = (current << n) | c
 
                     if current in exhausted_paths:
                         current = last_path
