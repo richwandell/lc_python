@@ -8,15 +8,19 @@ class Solution:
         matches = {}
         def match(i, j):
             if (i, j) not in matches:
-
                 if j == len(p):
-                m1 = s[0] == p[0] or p[0] == "."
-                if len(p) >= 2 and p[1] == "*":
-                    ret = match(s, p[2:]) or m1 and match(s[1:], p[1:])
+                    ret = i == len(s)
                 else:
-                    ret = m1 and match(s[1:], p[1:])
-                matches[s, p] = ret
-            return matches[s, p]
+                    m1 = i < len(s) and (s[i] == p[j] or p[j] == ".")
+
+                    if j+1 < len(p) and p[j + 1] == "*":
+                        ret = match(i, j+2) or (m1 and match(i+1, j))
+                    else:
+                        ret = m1 and match(i+1, j+1)
+                matches[i, j] = ret
+            else:
+                print("in matches")
+            return matches[i, j]
         return match(0, 0)
 
 

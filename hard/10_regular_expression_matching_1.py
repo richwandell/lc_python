@@ -1,24 +1,20 @@
-'''
-'.' Matches any single character.
-'*' Matches zero or more of the preceding element.
-'''
-
 class Solution:
     def isMatch(self, s: str, p: str) -> bool:
 
         def match(s, p):
             if not p:
-                return not s
+                return s == ''
 
-            m1 = bool(s) and (p[0] == s[0] or p[0] == ".")
-
+            # first character
+            # true if first characters match
+            # true if pattern first character is a dot
+            m = bool(s) and (p[0] == s[0] or p[0] == ".")
             if len(p) >= 2 and p[1] == "*":
-                return match(s, p[2:]) or (m1 and match(s[1:], p))
+                return match(s, p[2:]) or (m and match(s[1:], p))
             else:
-                return m1 and match(s[1:], p[1:])
+                return m and match(s[1:], p[1:])
 
         return match(s, p)
-
 
 s = Solution()
 print(s.isMatch("aab", "c*a*b")) # true
