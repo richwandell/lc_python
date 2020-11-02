@@ -3,10 +3,10 @@ class Solution:
         j, k = 0, len(s) - 1
 
         while j <= k:
-            if not s[j].isalpha():
+            if not s[j].isalnum():
                 j += 1
                 continue
-            if not s[k].isalpha():
+            if not s[k].isalnum():
                 k -= 1
                 continue
 
@@ -19,6 +19,6 @@ class Solution:
 
 s = Solution()
 
-# print(s.isPalindrome("A man, a plan, a canal: Panama"))
-# print(s.isPalindrome("race a car"))
+print(s.isPalindrome("A man, a plan, a canal: Panama"))
+print(s.isPalindrome("race a car"))
 print(s.isPalindrome("0P"))
