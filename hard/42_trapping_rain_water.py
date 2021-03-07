@@ -15,19 +15,20 @@ Input: height = [4,2,0,3,2,5]
 Output: 9
     """
     def trap(self, height: List[int]) -> int:
+        if len(height) == 0:
+            return 0
+        left_max = [0]*len(height)
+        right_max = [0]*len(height)
+        left_max[0] = height[0]
+        for i in range(1, len(height)):
+            left_max[i] = max(height[i], left_max[i - 1])
+        right_max[len(height)-1] = height[len(height)-1]
+        for i in range(len(height)-2, -1, -1):
+            right_max[i] = max(height[i], right_max[i + 1])
 
         total = 0
         for i, n in enumerate(height):
-            left_max = 0
-            right_max = 0
-
-            for j in range(i, -1, -1):
-                left_max = max(left_max, height[j])
-
-            for j in range(i, len(height)):
-                right_max = max(right_max, height[j])
-
-            m = min(left_max, right_max)
+            m = min(left_max[i], right_max[i])
             if m > n:
                 total += m - n
 
