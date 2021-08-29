@@ -33,23 +33,11 @@ Output: 0
     def searchInsert(self, nums: List[int], target: int) -> int:
 
         def search(nums):
-            if len(nums) == 0:
-                return -1
-            elif len(nums) == 1:
+            if len(nums) == 1:
                 if target <= nums[0]:
                     return 0
                 elif target > nums[0]:
                     return 1
-                return -1
-            elif len(nums) == 2:
-                if nums[0] == target: return 0
-                if nums[1] == target: return 1
-                if nums[0] < target < nums[1]:
-                    return 1
-                elif nums[1] < target:
-                    return 2
-                elif nums[0] > target:
-                    return 0
                 return -1
 
             left, right = nums[0:len(nums)//2], nums[len(nums)//2:]
@@ -61,11 +49,6 @@ Output: 0
             if -1 < found_right != len(right):
                 return len(left) + found_right
 
-            if found_left == len(left) and found_right == 0:
-                return len(left)
-            elif found_left == len(left) and found_right > 0:
-                return len(left) + found_right
-
             if left[len(left)-1] < target < right[0]:
                 return len(left)
             elif right[len(right)-1] < target:
@@ -74,8 +57,7 @@ Output: 0
                 return 0
             return -1
 
-        out = search(nums)
-        return out if out > -1 else 0
+        return search(nums)
 
 s = Solution()
 print(s.searchInsert([1,3,5,6], 5))
