@@ -18,24 +18,24 @@ Output: ["()"]
     """
     def generateParenthesis(self, n: int) -> List[str]:
 
-        return_vals = []
+        answer = []
+        def gen(items = [], l=0, r=0):
 
-        for i in range(n, -1, -1):
-            opens, closes = [], []
-            tmp = ""
-            while len(closes) < n:
-                if len(opens) == len(closes):
-                    opens.append("(")
-                    tmp += "("
-                elif len(opens) == i:
-                    closes.append(")")
-                    tmp += ")"
-                else:
-                    opens.append("(")
-                    tmp += "("
-            return_vals.append(tmp)
-        return return_vals
+            if len(items) == 2*n:
+                answer.append("".join(items))
+                return
+            if l < n:
+                items.append("(")
+                gen(items, l+1, r)
+                items.pop()
 
+            if r < l:
+                items.append(")")
+                gen(items, l, r+1)
+                items.pop()
+
+        gen([], 0)
+        return answer
 
 s = Solution()
 print(s.generateParenthesis(3))
